@@ -27,6 +27,23 @@ DEFAULT_NUM_CHUNKS = 4  # the number of chunks that are added to the chat contex
 DEFAULT_TEMPERATURE = 0.1  # the degree of model creativity (less = more strict)
 DEFAULT_MEMORY_SIZE = 3  # the number of recent Q&A pairs to keep in memory and add to the chat context
 
+# another potential prompt to experiment with
+EXPERIMENTAL_PROMPT_TEMPLATE = """You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
+
+Context: 
+{context}
+
+Document Summaries:
+{summaries}
+
+Chat History:
+{memory}
+
+User Question: 
+{question}
+
+Answer:"""
+
 # Default prompt template for the chat model.
 DEFAULT_PROMPT_TEMPLATE = """Here are the chunks retrieved based on similarity search from user's question. They might or might not be directly related to the question:
 {context}
@@ -578,7 +595,7 @@ def main():
 
         with st.expander("💬 Chat Settings", expanded=False):
             memory_size = st.number_input("Number of messages to keep in memory", min_value=1, max_value=10, value=DEFAULT_MEMORY_SIZE, key="memory_size_input")
-            prompt_template = st.text_area("Prompt template", value=DEFAULT_PROMPT_TEMPLATE, key="prompt_template_input")
+            prompt_template = st.text_area("Prompt template", value=EXPERIMENTAL_PROMPT_TEMPLATE, key="prompt_template_input")
 
         uploaded_files = st.file_uploader("Choose files", accept_multiple_files=True, key="file_uploader")
         process_button = st.button("🔄 Process Documents", key="process_button")
